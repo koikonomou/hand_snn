@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="shadowhand_motor">
+    <xacro:include filename="$(find sr_description)/materials.urdf.xacro"/>
+    <xacro:include filename="$(find sr_description)/hand/xacro/full_hand.urdf.xacro"/>
+    <xacro:include filename="$(find sr_description)/other/xacro/gazebo/gazebo.urdf.xacro"/>
+    <!-- hand with cylindrical base drifts in gazebo, attach it to the world -->
+    <link name="world" />
+
+    <joint name="rh_world_joint" type="fixed">
+      <parent link="world" />
+      <child link="box" />
+      <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0" />
+    </joint>
+    <link name="box">
+      <inertial>
+        <mass value="1.0" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1" ixy="0"  ixz="0"
+                 iyy="1" iyz="0"
+                 izz="1" />
+      </inertial> 
+      <visual>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <box size="1.0 0.05 1" />
+        </geometry>
+      </visual> 
+      <collision>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <box size="1.0 0.05 1" />
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="box">
+      <material>Gazebo/LightWood</material>
+      <mu1>50.0</mu1>
+      <mu2>50.0</mu2>
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+    </gazebo>
+    <joint name="box_joint" type="fixed">
+      <parent link="box" />
+      <child link="rh_forearm" />
+      <origin xyz="0.0 -0.025 0.08" rpy="1.57 0.0 0.0" />
+    </joint>
+
+    <link name="box_table">
+      <inertial>
+        <mass value="1.0" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1" ixy="0"  ixz="0"
+                 iyy="1" iyz="0"
+                 izz="1" />
+      </inertial> 
+      <visual>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <box size="1.0 0.7 0.45" />
+        </geometry>
+      </visual> 
+      <collision>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <box size="1.0 0.7 0.45" />
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="box_table">
+      <material>Gazebo/LightWood</material>
+      <mu1>50.0</mu1>
+      <mu2>50.0</mu2>
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+    </gazebo>
+    <joint name="table_box_joint" type="fixed">
+      <parent link="world" />
+      <child link="box_table" />
+      <origin xyz="0.0 -0.35 0.225" rpy="0.0 0.0 0.0" />
+    </joint>
+<!-- 
+    <link name="pen_link">
+      <inertial>
+        <mass value="1.0" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1" ixy="0"  ixz="0"
+                 iyy="1" iyz="0"
+                 izz="1" />
+      </inertial> 
+      <visual>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <cylinder length="0.2" radius="0.004"/>
+        </geometry>
+      </visual> 
+      <collision>
+        <origin xyz="0 0 0" />
+        <geometry>
+          <cylinder length="0.2" radius="0.004"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="pen_link">
+      <material>Gazebo/Red</material>
+      <mu1>50.0</mu1>
+      <mu2>50.0</mu2>
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+    </gazebo>
+    <joint name="pen_joint" type="fixed">
+      <parent link="world" />
+      <child link="pen_link" />
+      <origin xyz="0.0 -0.3 0.454" rpy="1.57 0.0 1.57" />
+    </joint> -->
+    <xacro:shadowhand muscletrans="false" muscle="false" hand_type="hand_e" bio="false" bt_sp="false"
+                      ubi="false" eli="false" reflect="1.0" prefix="rh_" lf="true" />
+</robot>
